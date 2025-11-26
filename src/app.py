@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import joblib
 import streamlit as st
+from pathlib import Path
 
 from preprocessing import preprocessing
 
@@ -79,9 +80,35 @@ def load_artifacts():
     Load trained model, training columns and raw training data
     needed for consistent preprocessing / encoding.
     """
-    model = joblib.load("../results/final_model.pkl")
-    train_columns = joblib.load("../results/train_columns.pkl")
-    train_df = pd.read_csv("../data/train.csv")
+    base_dir = Path(__file__).resolve().parent.parent  # repo root
+    results_dir = base_dir / "results"
+    data_dir = base_dir / "data"
+
+    model_path = results_dir / "final_model.pkl"
+    cols_path = results_dir / "train_columns.pkl"
+    train_csv_path = data_dir / "train.csv"
+
+    if not model_path.exists():
+        raise FileNotFoundError(
+            f"Model file not found at {model_path}. "
+            f"Run train.py locally to generate it, commit results/ to the repo, "
+            f"and redeploy the app."
+        )
+    if not cols_path.exists():
+        raise FileNotFoundError(
+            f"train_columns.pkl not found at {cols_path}. "
+            f"Run train.py locally to generate it, commit results/ to the repo, "
+            f"and redeploy the app."
+        )
+    if not train_csv_path.exists():
+        raise FileNotFoundError(
+            f"train.csv not found at {train_csv_path}. "
+            f"Add your training CSV (or a sample) to the data/ folder and commit it."
+        )
+
+    model = joblib.load(model_path)
+    train_columns = joblib.load(cols_path)
+    train_df = pd.read_csv(train_csv_path)
     return model, train_columns, train_df
 
 
