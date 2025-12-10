@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sklearn.model_selection import KFold
 
 
 def memory_card_to_gb(series):
