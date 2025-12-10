@@ -671,8 +671,11 @@ def main():
                     conf_color = "#f44336"
                 
                 st.markdown(f"""
-                <div class="metric-card">
-                <strong>Confidence Level:</strong> <span style="color: {conf_color};">{conf_text}</span>
+                <div class="prediction-card" style="margin-top: 0.5rem;">
+                    <h3>Confidence</h3>
+                    <p style="font-size: 1.3rem; margin: 0.25rem 0;">
+                        <strong>{conf_text}</strong> ({confidence:.1%})
+                    </p>
                 </div>
                 """, unsafe_allow_html=True)
     
